@@ -16,28 +16,29 @@ const Contact = () => {
   const [message, setMessage] = useState<string>("");
   const [isEmailSending, setIsEmailSending] = useState<boolean>(false);
 
-  // const validateEmail = (email: string) => {
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return emailRegex.test(email);
-  // };
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-  const sendEmailMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const sendEmailMessage = async () => {
+    // e.preventDefault();
 
-    // if (!validateEmail(email)) {
-    //   toast.error("Please enter a valid email address.");
-    //   return;
-    // }
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
 
-    // setIsEmailSending(true);
-    console.log("reached before request");
+    setIsEmailSending(true);
 
     try {
-      const response = await axios.post("/api/send-email", {
-        email,
-        message,
-      });
-      console.log(response);
+      const response = await axios.post(
+        "http://localhost:8080/api/send-email",
+        {
+          email,
+          message,
+        }
+      );
 
       if (response.data.success) {
         toast.success(response.data.message);
